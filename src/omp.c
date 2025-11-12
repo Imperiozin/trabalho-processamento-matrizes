@@ -5,7 +5,7 @@
 #include <omp.h>
 
 #ifndef NUMERO
-#define NUMERO 4000
+#define NUMERO 6000
 #endif
 
 #ifndef TILE
@@ -14,18 +14,20 @@
 
 static inline void *xaligned_alloc(size_t align, size_t bytes)
 {
-#if defined(_WIN32)
-    return _aligned_malloc(bytes, align);
-#elif defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
-    // aligned_alloc exige múltiplo de align
-    size_t sz = (bytes + (align - 1)) & ~(align - 1);
-    return aligned_alloc(align, sz);
-#else
-    void *p = NULL;
-    if (posix_memalign(&p, align, bytes) != 0)
-        return NULL;
-    return p;
-#endif
+    #if defined(_WIN32)
+        return _aligned_malloc(bytes, align);
+    #elif defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
+        // aligned_alloc exige múltiplo de align
+        size_t sz = (bytes + (align - 1)) & ~(align - 1);
+        return aligned_alloc(align, sz);
+    #else
+        void *p = NULL;
+        if (posix_memalign(&p, align, bytes) != 0)
+            return NULL;
+        return p;
+    #endif
+
+    return malloc(bytes);
 }
 
 static inline void xaligned_free(void *p)
