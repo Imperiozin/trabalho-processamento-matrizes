@@ -5,9 +5,7 @@
 #include <time.h>
 #include <omp.h>
 
-#ifndef NUMERO
-    #define NUMERO 2000
-#endif
+#define NUMERO 2000
 
 #ifndef TILE
     #define TILE 128
@@ -62,8 +60,8 @@ int main(void)
     for (int i = 0; i < N; i++)
         for (int j = 0; j < N; j++)
         {
-            A[(size_t)i * N + j] = rand() % 2;
-            B[(size_t)i * N + j] = rand() % 2;
+            A[(size_t)i * N + j] = 1;//rand() % 2;
+            B[(size_t)i * N + j] = 1;//rand() % 2;
         }
 
     const double t0 = omp_get_wtime();
@@ -115,14 +113,14 @@ int main(void)
     }
 
     const double t1 = omp_get_wtime();
-    printf("%.2f s\n", t1 - t0);
+    //printf("%.2f s\n", t1 - t0);
 
     // Evita que o compilador descarte C
     long long checksum = 0;
 #pragma omp parallel for reduction(+ : checksum) schedule(static)
 for (int i = 0; i < N * N; i++)
     checksum += C[i];
-    fprintf(stderr, "%lld", checksum);
+    fprintf(stdout, "%lld", checksum);
 
     xaligned_free(A);
     xaligned_free(B);
