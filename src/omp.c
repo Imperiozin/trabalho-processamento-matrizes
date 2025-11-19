@@ -120,11 +120,11 @@ int main(void)
     printf("%.2f s\n", t1 - t0);
 
     // Evita que o compilador descarte C
-    long long checksum = 0;
-#pragma omp parallel for reduction(+ : checksum) schedule(static)
-for (int i = 0; i < N * N; i++)
-    checksum += C[i];
-    fprintf(stderr, "%lld", checksum);
+//     long long checksum = 0;
+// #pragma omp parallel for reduction(+ : checksum) schedule(static)
+// for (int i = 0; i < N * N; i++)
+//     checksum += C[i];
+//     fprintf(stderr, "%lld", checksum);
 
     xaligned_free(A);
     xaligned_free(B);

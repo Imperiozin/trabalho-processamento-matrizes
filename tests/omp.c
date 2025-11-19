@@ -60,8 +60,8 @@ int main(void)
     for (int i = 0; i < N; i++)
         for (int j = 0; j < N; j++)
         {
-            A[(size_t)i * N + j] = 1;//rand() % 2;
-            B[(size_t)i * N + j] = 1;//rand() % 2;
+            A[(size_t)i * N + j] = 2;//rand() % 2;
+            B[(size_t)i * N + j] = 2;//rand() % 2;
         }
 
     const double t0 = omp_get_wtime();
