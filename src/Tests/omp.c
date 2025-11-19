@@ -5,9 +5,7 @@
 #include <time.h>
 #include <omp.h>
 
-#ifndef NUMERO
-#define NUMERO 6000
-#endif
+#define NUMERO 2000
 
 #ifndef TILE
     #define TILE 128
@@ -15,20 +13,18 @@
 
 static inline void *xaligned_alloc(size_t align, size_t bytes)
 {
-    #if defined(_WIN32)
-        return _aligned_malloc(bytes, align);
-    #elif defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
-        // aligned_alloc exige múltiplo de align
-        size_t sz = (bytes + (align - 1)) & ~(align - 1);
-        return aligned_alloc(align, sz);
-    #else
-        void *p = NULL;
-        if (posix_memalign(&p, align, bytes) != 0)
-            return NULL;
-        return p;
-    #endif
-
-    return malloc(bytes);
+#if defined(_WIN32)
+    return _aligned_malloc(bytes, align);
+#elif defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
+    // aligned_alloc exige múltiplo de align
+    size_t sz = (bytes + (align - 1)) & ~(align - 1);
+    return aligned_alloc(align, sz);
+#else
+    void *p = NULL;
+    if (posix_memalign(&p, align, bytes) != 0)
+        return NULL;
+    return p;
+#endif
 }
 
 static inline void xaligned_free(void *p)
@@ -64,8 +60,8 @@ int main(void)
     for (int i = 0; i < N; i++)
         for (int j = 0; j < N; j++)
         {
-            A[(size_t)i * N + j] = rand() % 2;
-            B[(size_t)i * N + j] = rand() % 2;
+            A[(size_t)i * N + j] = 1;//rand() % 2;
+            B[(size_t)i * N + j] = 1;//rand() % 2;
         }
 
     const double t0 = omp_get_wtime();
@@ -117,14 +113,14 @@ int main(void)
     }
 
     const double t1 = omp_get_wtime();
-    printf("%.2f s\n", t1 - t0);
+    //printf("%.2f s\n", t1 - t0);
 
     // Evita que o compilador descarte C
     long long checksum = 0;
 #pragma omp parallel for reduction(+ : checksum) schedule(static)
 for (int i = 0; i < N * N; i++)
     checksum += C[i];
-    fprintf(stderr, "%lld", checksum);
+    fprintf(stdout, "%lld", checksum);
 
     xaligned_free(A);
     xaligned_free(B);
