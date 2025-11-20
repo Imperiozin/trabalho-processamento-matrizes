@@ -4,9 +4,9 @@
 
 #define NUMERO 2000
 
-int32_t matriz1[NUMERO][NUMERO];
-int32_t matriz2[NUMERO][NUMERO];
-int32_t resultado[NUMERO][NUMERO];
+int32_t* matriz1;
+int32_t* matriz2;
+int32_t* resultado;
 
 int _seed = 42;
 
@@ -16,8 +16,8 @@ void gerar_matrizes(int length) {
 
     for (int linha = 0; linha < length; linha++) {
         for (int coluna = 0; coluna < length; coluna++) {
-            matriz1[linha][coluna] = rand() % 2;
-            matriz2[linha][coluna] = rand() % 2;
+            matriz1[linha * length + coluna] = rand() % 2;
+            matriz2[linha * length + coluna] = rand() % 2;
         }
     }
 }
@@ -31,9 +31,9 @@ void multiplicar_matrizes(int length) {
         for (int coluna = 0; coluna < length; coluna++) {
             int32_t soma = 0;
             for (int k = 0; k < length; k++) {
-                soma += matriz1[linha][k] * matriz2[k][coluna];
+                soma += matriz1[linha * length + k] * matriz2[k * length + coluna];
             }
-            resultado[linha][coluna] = soma;
+            resultado[linha * length + coluna] = soma;
         }
     }
     //end = clock();
@@ -45,7 +45,7 @@ long long calculate_checksum(int length)
     long long checksum = 0;
     for (int i = 0; i < length; ++i) {
         for (int j = 0; j < length; ++j) {
-            checksum += (long long) resultado[i][j];
+            checksum += (long long) resultado[i * length + j];
         }
     }
 
@@ -66,6 +66,10 @@ int main(int argc, char **argv) {
     }
 
     const int N = numero_str ? atoi(numero_str) : NUMERO;
+
+    matriz1 = malloc(N * N * sizeof(int32_t));
+    matriz2 = malloc(N * N * sizeof(int32_t));
+    resultado = malloc(N * N * sizeof(int32_t));
 
     gerar_matrizes(N);
 
