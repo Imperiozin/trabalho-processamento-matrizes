@@ -1,13 +1,14 @@
 import subprocess
 import os
 import sys
+import time
 
 def compile_and_run(cfile):
-    exe = cfile.replace(".c", ".exe" if os.name == "nt" else "")
+    exe = cfile.replace(".c", ".exe")
     print(f"Compilando {cfile}...")
 
     # Compilar
-    compile_cmd = ["gcc", cfile, "-O3", "-fopenmp", "-march=native", "-pthread" ,"-o", exe]
+    compile_cmd = ["gcc", cfile, "-O3", "-fopenmp", "-march=native" ,"-o", exe]
     comp = subprocess.run(compile_cmd, capture_output=True, text=True)
 
     if comp.returncode != 0:
@@ -17,7 +18,7 @@ def compile_and_run(cfile):
     
     print(f"Executando {exe}...")
     # Executar
-    run = subprocess.run([exe], capture_output=True, text=True)
+    run = subprocess.run(['./'+exe], capture_output=True, text=True)
 
     if run.returncode != 0:
         print(f"Erro ao executar {exe}:")
@@ -38,16 +39,21 @@ def main():
         print("ERRO: Um dos arquivos .c não existe.")
         return
 
+    inicio1 = time.time()
     out1 = compile_and_run(file1)
+    fim1 = time.time()
+
+    inicio2 = time.time()
     out2 = compile_and_run(file2)
+    fim2 = time.time()
 
     if out1 is None or out2 is None:
         print("Erro ao executar arquivos.")
         return
 
     print("\n======= RESULTADOS =======")
-    print(f"{file1}: {out1}")
-    print(f"{file2}: {out2}")
+    print(f"{file1}: {out1} - {fim1 - inicio1}s")
+    print(f"{file2}: {out2} - {fim2 - inicio2}s")
 
     print("\n======= COMPARAÇÃO =======")
     if out1 == out2:

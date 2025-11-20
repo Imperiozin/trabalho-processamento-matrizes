@@ -12,8 +12,8 @@ int resultado[NUMERO][NUMERO];
 void gerar_matrizes() {
     for (int linha = 0; linha < NUMERO; linha++) {
         for (int coluna = 0; coluna < NUMERO; coluna++) {
-            matriz1[linha][coluna] = 1;//rand() % 2;
-            matriz2[linha][coluna] = 1;//rand() % 2;
+            matriz1[linha][coluna] = 2;//rand() % 2;
+            matriz2[linha][coluna] = 2;//rand() % 2;
         }
     }
 }
