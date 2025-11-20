@@ -12,4 +12,4 @@
 ## Testes
 
 Na pasta do Tests execute:
-python compare.py base.c omp.c
+python compare.py base.exe omp.exe 2000 40
