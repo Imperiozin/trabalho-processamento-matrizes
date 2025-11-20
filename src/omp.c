@@ -126,21 +126,20 @@ void calculate_checksum(int32_t *C, int N)
 
 int main(int argc, char **argv)
 {
-    char* numero_str = NULL;
+    char* length_matrix_str = NULL;
 
     if(argc > 0)
     {
-        numero_str = argv[1];
-
+        length_matrix_str = argv[1];
         if(argc > 1)
         {
             _seed = atoi(argv[2]);
         }
     }
 
-    const int N = numero_str ? atoi(numero_str) : NUMERO;
+    const int length_matrix = length_matrix_str ? atoi(length_matrix_str) : NUMERO;
 
-    const size_t bytes = (size_t)N * (size_t)N * sizeof(int32_t);
+    const size_t bytes = (size_t)length_matrix * (size_t)length_matrix * sizeof(int32_t);
 
     // Alocação alinhada para melhor SIMD e pré-busca
     int32_t *A = (int32_t *)xaligned_alloc(64, bytes);
@@ -154,12 +153,12 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    generate_matrix(A, B, N);
+    generate_matrix(A, B, length_matrix);
 
-    calculate_matrix(A, B, BT, C, N);
+    calculate_matrix(A, B, BT, C, length_matrix);
 
     // Evita que o compilador descarte C
-    calculate_checksum(C, N);
+    calculate_checksum(C, length_matrix);
 
     xaligned_free(A);
     xaligned_free(B);
