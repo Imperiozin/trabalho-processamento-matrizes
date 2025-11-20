@@ -6,7 +6,8 @@
 - ./base.exe
 
 - gcc -O3 -fopenmp -march=native omp.c -o omp.exe
-- ./omp.exe
+- .\omp.exe 2000 40
+- .\omp.exe {Tamanho da matriz (opcional) {seed da matriz (opcional)}}
 
 ## Testes
 
