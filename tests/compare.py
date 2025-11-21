@@ -2,6 +2,8 @@ import subprocess
 import os
 import sys
 import time
+import argparse
+import numpy as np
 
 def run_exe(exe_path, tamanho_matriz, seed):
     if not os.path.exists(exe_path):
@@ -12,7 +14,7 @@ def run_exe(exe_path, tamanho_matriz, seed):
 
     inicio = time.time()
     run = subprocess.run(
-        [exe_path , str(tamanho_matriz), str(seed)],
+        [exe_path ,  "--l", str(tamanho_matriz), "--mt", "1", "--seed", str(seed)],
         capture_output=True,
         text=True
     )
@@ -27,17 +29,27 @@ def run_exe(exe_path, tamanho_matriz, seed):
 
 
 def main():
-    if len(sys.argv) != 5:
-        print("Uso: python compare_execs.py arquivo1.exe arquivo2.exe tamanho_matriz seed")
-        return
+    parser = argparse.ArgumentParser(
+        description="Compara a execução de dois arquivos .exe com a mesma matriz."
+    )
 
-    exe1 = sys.argv[1]
-    exe2 = sys.argv[2]
+    parser.add_argument("--exe1", required=True, help="Primeiro executável")
+    parser.add_argument("--exe2", required=True, help="Segundo executável")
+    parser.add_argument("--length", type=int, required=True, help="Tamanho da matriz NxN")
+    #parser.add_argument(["--s", "--seed"], type=int, required=True, help="Seed para gerar matriz")
 
-    tamanho_matriz = sys.argv[3]
-    seed = sys.argv[4]
+    args = parser.parse_args()
 
-    print(f"Comparando {exe1} e {exe2} com tamanho de matriz {tamanho_matriz} e seed {seed}.")
+    exe1 = args.exe1
+    exe2 = args.exe2
+    tamanho_matriz = args.length if args.length is not None else args.l
+    seed = 40
+
+    print(f"Comparando {exe1} e {exe2} com tamanho de matriz {tamanho_matriz}.")
+
+    m = np.random.randint(0, 2, size=(int(tamanho_matriz), int(tamanho_matriz)), dtype=np.int32)
+    np.savetxt("matriz1.csv", m, fmt="%d", delimiter=",")
+    np.savetxt("matriz2.csv", m, fmt="%d", delimiter=",")
 
     # Executar EXE 1
     (out1, time1) = run_exe(exe1 , tamanho_matriz, seed)
