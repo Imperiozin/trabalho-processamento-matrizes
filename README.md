@@ -4,12 +4,21 @@
 
 - gcc base.c -o base.exe
 - ./base.exe
+{--l ou --length : Tamanho da matrix}
+{--s ou --seed : a seed que deverá gerar}
+{--mt ou --matrix_type : Tipo de geração da matrix; 0 = usando o srand com a seed; 1 =  usando arquivos com nome matriz1.csv e matriz2.csv}
+-exemplo: .\base.exe --l 2000 --s 45
 
+## OMP
 - gcc -O3 -fopenmp -march=native omp.c -o omp.exe
-- .\omp.exe 2000 40
-- .\omp.exe {Tamanho da matriz (opcional) {seed da matriz (opcional)}}
+- .\omp.exe 
+{--l ou --length : Tamanho da matrix}
+{--s ou --seed : a seed que deverá gerar}
+{--mt ou --matrix_type : Tipo de geração da matrix; 0 = usando o srand com a seed; 1 =  usando arquivos com nome matriz1.csv e matriz2.csv}
+
+-exemplo: .\omp.exe --l 2000 --s 40
 
 ## Testes
-
 Na pasta do Tests execute:
-python compare.py base.exe omp.exe 2000 40
+python compare.py --exe1 base.exe --exe2 omp.exe --length 2000
+ou python compare.py --help
