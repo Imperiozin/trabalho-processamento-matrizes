@@ -134,7 +134,7 @@ void calculate_matrix(int32_t *A, int32_t *B, int32_t *BT, int32_t *C)
     }
 
     const double t1 = omp_get_wtime();
-    printf("%.2f s\n", t1 - t0);
+    printf("%.5f s\n", t1 - t0);
 }
 
 void calculate_checksum(int32_t *C)

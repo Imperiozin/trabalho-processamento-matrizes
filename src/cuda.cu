@@ -145,7 +145,7 @@ int main(int argc, char** argv) {
     long long checksum = 0;
     for (int i = 0; i < N*N; ++i) checksum += hC[i];
 
-    printf("%.3f s\n", ms / 1000.0f);
+    printf("%.5f s\n", ms / 1000.0f);
     fprintf(stderr, "checksum=%lld\n", checksum);
 
     // Libera
