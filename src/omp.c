@@ -87,7 +87,7 @@ void generate_matrix(int32_t *A, int32_t *B)
 
 void calculate_matrix(int32_t *A, int32_t *B, int32_t *BT, int32_t *C)
 {
-    // const double t0 = omp_get_wtime();
+    const double t0 = omp_get_wtime();
     // Transpor B -> BT para acesso contíguo no loop interno
     #pragma omp parallel for collapse(2) schedule(static)
         for (int i = 0; i < _matrix_length; i++)
@@ -133,8 +133,8 @@ void calculate_matrix(int32_t *A, int32_t *B, int32_t *BT, int32_t *C)
         }
     }
 
-    // const double t1 = omp_get_wtime();
-    // printf("%.2f s\n", t1 - t0);
+    const double t1 = omp_get_wtime();
+    printf("%.2f s\n", t1 - t0);
 }
 
 void calculate_checksum(int32_t *C)
