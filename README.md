@@ -29,3 +29,6 @@ Precisa usar o terminal x64 Native Tools Command Prompt for VS 2022
 Na pasta do Tests execute:
 python compare.py --exe1 base.exe --exe2 omp.exe --length 2000
 ou python compare.py --help
+
+## Artigo
+Exemplo: https://sol.sbc.org.br/index.php/sbcup/article/view/3310
