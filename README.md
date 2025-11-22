@@ -18,6 +18,12 @@
 
 -exemplo: .\omp.exe --l 2000 --s 40
 
+## CUDA
+- nvcc -O3 cuda.cu -o cuda
+- .\cuda.exe
+- {--l ou --length : Tamanho da matrix}
+{--s ou --seed : a seed que deverá gerar}
+
 ## Testes
 Na pasta do Tests execute:
 python compare.py --exe1 base.exe --exe2 omp.exe --length 2000
