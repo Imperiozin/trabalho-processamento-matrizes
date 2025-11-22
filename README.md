@@ -19,6 +19,7 @@
 -exemplo: .\omp.exe --l 2000 --s 40
 
 ## CUDA
+Precisa usar o terminal x64 Native Tools Command Prompt for VS 2022
 - nvcc -O3 cuda.cu -o cuda
 - .\cuda.exe
 - {--l ou --length : Tamanho da matrix}
