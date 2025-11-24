@@ -20,7 +20,7 @@
 
 ## CUDA
 Precisa usar o terminal x64 Native Tools Command Prompt for VS 2022
-- nvcc -O3 cuda.cu -o cuda
+- nvcc -O3 -arch=native cuda.cu -o cuda
 - .\cuda.exe
 - {--l ou --length : Tamanho da matrix}
 {--s ou --seed : a seed que deverá gerar}
@@ -48,4 +48,4 @@ CUDA BLOCK: 32
 TEMPOS
 Tamanho da Matriz   |    1K    |    2K    |    3K    |    4K
 OMP                 | 0.00866s | 0.04733s | 0.15866s | 0.32700s
-CUDA                | 0.00211s | 0.01419s | 0.05171s | 0.11452s
+CUDA                | 0.00211s | 0.01419s | 0.05171s | 0.11003s
