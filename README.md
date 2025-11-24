@@ -49,3 +49,14 @@ TEMPOS
 Tamanho da Matriz   |    1K    |    2K    |    3K    |    4K
 OMP                 | 0.00866s | 0.04733s | 0.15866s | 0.32700s
 CUDA                | 0.00211s | 0.01419s | 0.05171s | 0.11003s
+
+### PC3
+- Intel® Core™ i5-10210U CPU @ 1.60GHz - Cache | L1 256KB | L2 1MB | L3 6MB
+- Intel(R) UHD Graphics Family
+
+Parâmetros:
+OMP TILE: 128
+
+TEMPOS
+Tamanho da Matriz   |    1K    |    2K    |    3K    |    4K
+OMP                 | 0.06000s | 0.33800s | 0.96400s | 2.18600s
