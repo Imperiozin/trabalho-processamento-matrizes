@@ -82,3 +82,19 @@ OMP TILE: 128
 Tamanho da Matriz   |    1K    |    2K    |    3K    |    4K
 
 OMP                 | 0.06000s | 0.33800s | 0.96400s | 2.18600s
+
+### PC4
+- AMD Ryzen 5 3600G 6-core Processor 3,95Ghz - Cache | L1 384Kb | L2 3Mb | L3 32MB 
+- NVidia GeForce RTX 2060 Super 8Gb
+
+#### Parâmetros:
+OMP TILE: 128
+CUDA BLOCK: 32
+
+#### TEMPOS
+Tamanho da Matriz   |    1K    |    2K    |    3K    |    4K
+
+OMP                 | 0.04233s | 0.34900s | 1.16666s | 2.80733s
+CUDA                | 0.00821s | 0.01975s | 0.06371s | 0.15219s
+
+
