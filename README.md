@@ -51,7 +51,9 @@ MPI TILE: 128
 
 TEMPOS
 Tamanho da Matriz   |    1K    |    2K    |    3K    |    4K
+
 OMP                 | 0.06474s | 0.23354s | 0.95120s | 1.70058s
+
 MPI - np 7          | 0.09966s | 0.43733s | 1.15866s | 2.19500s
 
 ### PC2
@@ -64,7 +66,9 @@ CUDA BLOCK: 32
 
 TEMPOS
 Tamanho da Matriz   |    1K    |    2K    |    3K    |    4K
+
 OMP                 | 0.00866s | 0.04733s | 0.15866s | 0.32700s
+
 CUDA                | 0.00211s | 0.01419s | 0.05171s | 0.11003s
 
 ### PC3
@@ -76,4 +80,5 @@ OMP TILE: 128
 
 TEMPOS
 Tamanho da Matriz   |    1K    |    2K    |    3K    |    4K
+
 OMP                 | 0.06000s | 0.33800s | 0.96400s | 2.18600s
