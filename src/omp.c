@@ -35,7 +35,16 @@ static inline void *xaligned_alloc(size_t align, size_t bytes)
     return malloc(bytes);
 }
 
-int carregar_matriz(const char *arquivo, int32_t *matriz) {
+static inline void xaligned_free(void *p)
+{
+#if defined(_WIN32)
+    _aligned_free(p);
+#else
+    free(p);
+#endif
+}
+
+static int carregar_matriz(const char *arquivo, int32_t *matriz) {
     FILE *fp = fopen(arquivo, "r");
     if (!fp) {
         perror("Erro ao abrir arquivo");
@@ -53,16 +62,7 @@ int carregar_matriz(const char *arquivo, int32_t *matriz) {
     }
 
     fclose(fp);
-    return 0;
-}
-
-static inline void xaligned_free(void *p)
-{
-#if defined(_WIN32)
-    _aligned_free(p);
-#else
-    free(p);
-#endif
+    return 0;;
 }
 
 static inline int min_i(int a, int b) { return a < b ? a : b; }
