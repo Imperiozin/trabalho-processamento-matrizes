@@ -37,6 +37,7 @@ ou python compare.py --help
 
 ## Artigo
 Exemplo: https://sol.sbc.org.br/index.php/sbcup/article/view/3310
+Nosso artigo: https://www.overleaf.com/project/691d0f95da7e6b1d97251e98
 
 ## Máquinas
 
