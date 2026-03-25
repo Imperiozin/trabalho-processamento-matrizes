@@ -77,7 +77,6 @@ void get_args(int argc, char **argv)
         else if ((strcmp(argv[i], "--seed") == 0 || strcmp(argv[i], "--s") == 0) && i + 1 < argc)
         {
             _seed = atoi(argv[i + 1]);
-            printf("Seed: %d\n", _seed);
             i++;
         }
         else if ((strcmp(argv[i], "--matrix_type") == 0 || strcmp(argv[i], "--mt") == 0) && i + 1 < argc)
