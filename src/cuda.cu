@@ -8,18 +8,17 @@
 #endif
 
 #ifndef BLOCK
-#define BLOCK 32   // 16/32 funcionam bem, ajustar conforme GPU
+#define BLOCK 32 // 16/32 funcionam bem, ajustar conforme GPU
 #endif
 
-int _matrix_length = NUMERO;
+int _matrix_type = 0;
 int _seed = 42;
-int _matrix_type = 0; // 0: random
-
+int _matrix_length = NUMERO;
 
 // Kernel: C = A * B  (N x N), int32, tiling em shared memory
-__global__ void matmul_tiled(const int32_t* __restrict__ A,
-                             const int32_t* __restrict__ B,
-                             int32_t* __restrict__ C,
+__global__ void matmul_tiled(const int32_t *__restrict__ A,
+                             const int32_t *__restrict__ B,
+                             int32_t *__restrict__ C,
                              int N)
 {
     __shared__ int32_t As[BLOCK][BLOCK];
@@ -33,7 +32,8 @@ __global__ void matmul_tiled(const int32_t* __restrict__ A,
     // Número de tiles ao longo de K
     const int tiles = (N + BLOCK - 1) / BLOCK;
 
-    for (int t = 0; t < tiles; ++t) {
+    for (int t = 0; t < tiles; ++t)
+    {
         // Coluna base do tile de A e linha base do tile de B
         const int aCol = t * BLOCK + threadIdx.x;
         const int bRow = t * BLOCK + threadIdx.y;
@@ -52,9 +52,10 @@ __global__ void matmul_tiled(const int32_t* __restrict__ A,
 
         __syncthreads();
 
-        // Multiplica os sub-blocos (loop no eixo K do tile)
-        #pragma unroll
-        for (int k = 0; k < BLOCK; ++k) {
+// Multiplica os sub-blocos (loop no eixo K do tile)
+#pragma unroll
+        for (int k = 0; k < BLOCK; ++k)
+        {
             acc += As[threadIdx.y][k] * Bs[k][threadIdx.x];
         }
         __syncthreads();
@@ -64,48 +65,60 @@ __global__ void matmul_tiled(const int32_t* __restrict__ A,
         C[row * N + col] = acc;
 }
 
-void get_args(int argc, char** argv)
+void get_args(int argc, char **argv)
 {
     for (int i = 1; i < argc; i++)
     {
-        if ((strcmp(argv[i], "--length") == 0 || strcmp(argv[i], "--l") == 0) && i + 1 < argc) {
+        if ((strcmp(argv[i], "--length") == 0 || strcmp(argv[i], "--l") == 0) && i + 1 < argc)
+        {
             _matrix_length = atoi(argv[i + 1]);
             i++;
         }
-        else if ((strcmp(argv[i], "--seed") == 0
-            || strcmp(argv[i], "--s") == 0) && i + 1 < argc) {
+        else if ((strcmp(argv[i], "--seed") == 0 || strcmp(argv[i], "--s") == 0) && i + 1 < argc)
+        {
             _seed = atoi(argv[i + 1]);
+            printf("Seed: %d\n", _seed);
             i++;
         }
-        else if ((strcmp(argv[i], "--matrix_type") == 0 || strcmp(argv[i], "--mt") == 0) && i + 1 < argc) {
+        else if ((strcmp(argv[i], "--matrix_type") == 0 || strcmp(argv[i], "--mt") == 0) && i + 1 < argc)
+        {
             _matrix_type = atoi(argv[i + 1]);
             i++;
         }
     }
 }
 
-static inline void gpuAssert(cudaError_t code, const char* file, int line) {
-    if (code != cudaSuccess) {
+static inline void gpuAssert(cudaError_t code, const char *file, int line)
+{
+    if (code != cudaSuccess)
+    {
         fprintf(stderr, "CUDA Error: %s (%s:%d)\n", cudaGetErrorString(code), file, line);
         exit(1);
     }
 }
 #define CUDA_OK(x) gpuAssert((x), __FILE__, __LINE__)
-int main(int argc, char** argv) {
+int main(int argc, char **argv)
+{
 
     get_args(argc, argv);
-	int N = _matrix_length;
+    int N = _matrix_length;
 
     const size_t bytes = (size_t)N * (size_t)N * sizeof(int32_t);
 
     // Host
-    int32_t *hA = (int32_t*)malloc(bytes);
-    int32_t *hB = (int32_t*)malloc(bytes);
-    int32_t *hC = (int32_t*)malloc(bytes);
-    if (!hA || !hB || !hC) { fprintf(stderr, "Falha malloc host\n"); return 1; }
+    int32_t *hA = (int32_t *)malloc(bytes);
+    int32_t *hB = (int32_t *)malloc(bytes);
+    int32_t *hC = (int32_t *)malloc(bytes);
+    if (!hA || !hB || !hC)
+    {
+        fprintf(stderr, "Falha malloc host\n");
+        return 1;
+    }
 
-    srand(12345u);
-    for (int i = 0; i < N*N; ++i) {
+    srand(_seed);
+
+    for (int i = 0; i < N * N; ++i)
+    {
         hA[i] = rand() % 2;
         hB[i] = rand() % 2;
         hC[i] = 0;
@@ -143,7 +156,8 @@ int main(int argc, char** argv) {
 
     // Checksum para evitar dead-code
     long long checksum = 0;
-    for (int i = 0; i < N*N; ++i) checksum += hC[i];
+    for (int i = 0; i < N * N; ++i)
+        checksum += hC[i];
 
     printf("%.5f s\n", ms / 1000.0f);
     fprintf(stderr, "checksum=%lld\n", checksum);
@@ -152,7 +166,9 @@ int main(int argc, char** argv) {
     CUDA_OK(cudaFree(dA));
     CUDA_OK(cudaFree(dB));
     CUDA_OK(cudaFree(dC));
-    free(hA); free(hB); free(hC);
+    free(hA);
+    free(hB);
+    free(hC);
     CUDA_OK(cudaEventDestroy(e0));
     CUDA_OK(cudaEventDestroy(e1));
     return 0;
