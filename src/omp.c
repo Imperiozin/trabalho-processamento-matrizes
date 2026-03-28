@@ -84,8 +84,8 @@ void generate_matrix(int32_t *A, int32_t *B)
     {
         for (int j = 0; j < _matrix_length; j++)
         {
-            A[(size_t)i * _matrix_length + j] = rand() % 2;
-            B[(size_t)i * _matrix_length + j] = rand() % 2;
+            A[(size_t)i * _matrix_length + j] = rand() % 255;
+            B[(size_t)i * _matrix_length + j] = rand() % 255;
         }
     }
 }
@@ -210,6 +210,9 @@ int main(int argc, char **argv)
     {
         generate_matrix(A, B);
     }
+
+    printf("%d, %d\n", A[0], A[1]);
+    printf("%d, %d\n", B[0], B[1]);
 
     calculate_matrix(A, B, BT, C);
 

@@ -118,8 +118,8 @@ int main(int argc, char **argv)
 
     for (int i = 0; i < N * N; ++i)
     {
-        hA[i] = rand() % 2;
-        hB[i] = rand() % 2;
+        hA[i] = rand() % 255;
+        hB[i] = rand() % 255;
         hC[i] = 0;
     }
 
